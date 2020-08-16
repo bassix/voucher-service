@@ -5,6 +5,9 @@ namespace App\Service;
 
 use App\Entity\OrderEntity;
 use App\Entity\VoucherEntity;
+use App\Repository\OrderRepository;
+use App\Repository\VoucherRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class VoucherService
 {
@@ -12,13 +15,27 @@ class VoucherService
 
     private const MINIMUM_AMOUNT = '100';
 
+    private VoucherRepository $voucherRepository;
+
+    public function __construct(VoucherRepository $voucherRepository)
+    {
+        $this->voucherRepository = $voucherRepository;
+    }
+
     public function apply(OrderEntity $order): ?VoucherEntity
     {
         if (bccomp($order->getAmount(), self::MINIMUM_AMOUNT) < 0) {
             return null;
         }
 
-        return (new VoucherEntity())->setOrder($order)->setCode($this->generateCode());
+        do {
+            $voucherCode = $this->generateCode();
+            $voucher = $this->voucherRepository->count(['code' => $voucherCode]);
+        } while (null !== $voucher);
+
+        $voucher = (new VoucherEntity())->setOrder($order)->setCode($this->generateCode());
+
+        return $voucher;
     }
 
     protected function generateCode()
