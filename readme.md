@@ -24,7 +24,7 @@ git clone git@github.com:bassix/voucher-service.git
 cd voucher-service
 ```
 
-_**Note:** This project is basing on the [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/) branching model and workflow._
+_**Note:** This project is based on the [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/) branching model and workflow._
 
 Now generate an environment specific configuration specially for local development:
 
