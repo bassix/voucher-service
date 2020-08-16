@@ -5,28 +5,18 @@ namespace App\Service;
 
 use App\Entity\OrderEntity;
 use App\Entity\VoucherEntity;
-use App\Repository\VoucherRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
-class VoucherService
+class VoucherService extends AbstractService
 {
     public const CODE_LENGTH = 8;
 
     private const MINIMUM_AMOUNT = '100';
 
-    private EntityManagerInterface $entityManager;
-
-    private VoucherRepository $voucherRepository;
-
-    public function __construct(EntityManagerInterface $entityManager, VoucherRepository $voucherRepository)
-    {
-        $this->entityManager = $entityManager;
-        $this->voucherRepository = $voucherRepository;
-    }
-
     public function apply(OrderEntity $order): ?VoucherEntity
     {
-        if (bccomp($order->getAmount(), self::MINIMUM_AMOUNT) < 0) {
+        if (bccomp($order->getAmount(), self::MINIMUM_AMOUNT) <= 0) {
+            $this->logger->notice("Voucher code not generated for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with to low total amount of \"{$order->getAmount()}\"!\n");
+
             return null;
         }
 
@@ -37,6 +27,8 @@ class VoucherService
 
         $voucher = (new VoucherEntity())->setOrder($order)->setCode($this->generateCode());
         $this->entityManager->persist($voucher);
+
+        $this->logger->notice("Voucher code \"{$voucherCode}\" for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with total amount of \"{$order->getAmount()}\" was placed!\n");
 
         return $voucher;
     }
