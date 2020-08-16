@@ -21,6 +21,7 @@ class VoucherServiceTest extends KernelTestCase
         OrderEntity::class,
         VoucherEntity::class,
     ];
+
     private EntityManagerInterface $entityManager;
 
     protected function setUp(): void
@@ -48,7 +49,7 @@ class VoucherServiceTest extends KernelTestCase
     {
         /** @var VoucherRepository $voucherRepository */
         $voucherRepository = $this->entityManager->getRepository(VoucherEntity::class);
-        $voucherService = new VoucherService($voucherRepository);
+        $voucherService = new VoucherService($this->entityManager, $voucherRepository);
         $order = new OrderEntity();
 
         // Test a empty order gets now voucher!
