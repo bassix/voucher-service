@@ -91,13 +91,13 @@ docker exec --user www-data app bin/phpunit
 Run [phpstan](https://github.com/phpstan/phpstan) to make statical analyse of the code. (Level from 0 to 7, where 0 is the most loose, 7 is the strongest. 0 is default):
 
 ```bash
-docker exec --user www-data app vendor/phpstan/phpstan/phpstan analyse ./src --level 7
+docker exec --user www-data app vendor/phpstan/phpstan/phpstan analyse --level 7
 ```
 
 Run [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to fix errors in code (use `--dry-run` option only to see errors):
 
 ```bash
-docker exec --user www-data app vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix ./src
+docker exec --user www-data app vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix
 ```
 
 Documentation and constructor with more detailed information could be found at [https://mlocati.github.io/php-cs-fixer-configurator](https://mlocati.github.io/php-cs-fixer-configurator).

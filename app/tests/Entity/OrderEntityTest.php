@@ -6,6 +6,9 @@ namespace App\Tests\Service;
 use App\Entity\OrderEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @coversNothing
+ */
 class OrderEntityTest extends KernelTestCase
 {
     public function testEntity(): void
@@ -40,7 +43,7 @@ class OrderEntityTest extends KernelTestCase
                 'order_id' => 1,
                 'customer_id' => 1,
                 'status' => 'new',
-            ]
+            ],
         ];
 
         return $cases;

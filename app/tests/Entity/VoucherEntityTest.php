@@ -7,6 +7,9 @@ use App\Entity\OrderEntity;
 use App\Entity\VoucherEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @coversNothing
+ */
 class VoucherEntityTest extends KernelTestCase
 {
     public function testEntity(): void
@@ -41,7 +44,7 @@ class VoucherEntityTest extends KernelTestCase
                 'status' => 'new',
                 'code' => 'some-code',
                 'order' => OrderEntity::class,
-            ]
+            ],
         ];
 
         return $cases;

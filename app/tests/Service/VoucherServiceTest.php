@@ -13,6 +13,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TypeError;
 
+/**
+ * @coversNothing
+ */
 class VoucherServiceTest extends KernelTestCase
 {
     use EntityManagerAwareTrait;
