@@ -22,7 +22,8 @@ RUN set -eux; \
         freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev \
-        libwebp-dev \
+        rabbitmq-c \
+        rabbitmq-c-dev \
         zlib-dev \
     ; \
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
