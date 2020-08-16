@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Entity\OrderEntity;
+use App\Entity\VoucherEntity;
 use App\Service\VoucherService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TypeError;
@@ -33,7 +34,7 @@ class VoucherServiceTest extends KernelTestCase
         // Test a order with correct 100€ order amount is getting a voucher!
         $order->setAmount('100');
         $voucher = $voucherService->apply($order);
-        self::assertInstanceOf(\stdClass::class, $voucher);
+        self::assertInstanceOf(VoucherEntity::class, $voucher);
 
         $this->expectException(TypeError::class);
         $voucherService->apply(null);

@@ -16,10 +16,12 @@ class OrderEntityTest extends KernelTestCase
             self::assertInstanceOf(OrderEntity::class, $order);
             $order->setOrderId($actual['order_id']);
             $order->setCustomerId($actual['customer_id']);
+            $order->setStatus($actual['status']);
 
             $expected = $testCase['expected'];
             self::assertEquals($expected['order_id'], $order->getOrderId(), sprintf('Test case "%s" failed asserting the correct order id!', $row));
             self::assertEquals($expected['customer_id'], $order->getCustomerId(), sprintf('Test case "%s" failed asserting the correct customer id!', $row));
+            self::assertEquals($expected['status'], $order->getStatus(), sprintf('Test case "%s" failed asserting the correct state!', $row));
         }
     }
 
@@ -29,13 +31,15 @@ class OrderEntityTest extends KernelTestCase
             'actual' => [
                 'id' => 1,
                 'order_id' => 1,
-                'customer_id' => 1
+                'customer_id' => 1,
+                'status' => 'new',
             ],
             'expected' => [
                 'exception' => false,
                 'id' => 1,
                 'order_id' => 1,
-                'customer_id' => 1
+                'customer_id' => 1,
+                'status' => 'new',
             ]
         ];
 
