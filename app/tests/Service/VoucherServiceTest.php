@@ -35,6 +35,9 @@ class VoucherServiceTest extends KernelTestCase
         $order->setAmount('100');
         $voucher = $voucherService->apply($order);
         self::assertInstanceOf(VoucherEntity::class, $voucher);
+        self::assertInstanceOf(OrderEntity::class, $voucher->getOrder());
+        self::assertNotEmpty($voucher->getCode());
+        self::assertEquals(VoucherService::CODE_LENGTH, strlen($voucher->getCode()));
 
         $this->expectException(TypeError::class);
         $voucherService->apply(null);
