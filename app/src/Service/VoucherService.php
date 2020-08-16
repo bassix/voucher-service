@@ -30,8 +30,8 @@ class VoucherService
 
         do {
             $voucherCode = $this->generateCode();
-            $voucher = $this->voucherRepository->count(['code' => $voucherCode]);
-        } while (null !== $voucher);
+            $voucherCount = $this->voucherRepository->count(['code' => $voucherCode]);
+        } while (1 <= $voucherCount);
 
         $voucher = (new VoucherEntity())->setOrder($order)->setCode($this->generateCode());
 
