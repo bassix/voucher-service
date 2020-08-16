@@ -58,7 +58,7 @@ cd app
 
 By default, the database schema will be created by migration (or database fixtures located at `mariadb/fixtures/voucher.sql`).
 
-Alternative the Doctrine commands can be used to start with a empty database:
+Alternative the Doctrine commands can be used to start with an empty database:
 
 ```bash
 docker exec --user www-data app bin/console doctrine:database:create
@@ -74,7 +74,7 @@ docker exec --user www-data app bin/console doctrine:database:drop --force
 
 ### Code quality tools
 
-_**Note:** Why ever the SqlLite connection isn't working. So please use this workaround:_
+_**Note:** Why ever, the SQLite connection isn't working :/ So please use this workaround:_
 
 ```bash
 docker exec --user www-data app bin/console doctrine:database:drop --force
