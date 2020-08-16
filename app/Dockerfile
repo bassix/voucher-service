@@ -84,6 +84,10 @@ RUN set -eux; \
 # Create volumes
 VOLUME ["/srv/app", "/srv/app/public", "/srv/app/var"]
 
+# Add and activate message consumer
+COPY public public/
+ENTRYPOINT ["bash", "/srv/app/message.sh"]
+
 FROM nginx:${NGINX_VERSION}-alpine AS nginx
 
 COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
