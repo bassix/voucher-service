@@ -8,7 +8,7 @@ use App\Entity\VoucherEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * @coversNothing
+ * @covers VoucherEntity
  */
 class VoucherEntityTest extends KernelTestCase
 {

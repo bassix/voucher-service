@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TypeError;
 
 /**
- * @coversNothing
+ * @covers VoucherService
  */
 class VoucherServiceTest extends KernelTestCase
 {

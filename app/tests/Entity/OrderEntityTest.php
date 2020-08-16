@@ -7,7 +7,7 @@ use App\Entity\OrderEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
- * @coversNothing
+ * @covers OrderEntity
  */
 class OrderEntityTest extends KernelTestCase
 {
