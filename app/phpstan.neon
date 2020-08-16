@@ -1,0 +1,8 @@
+parameters:
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+
+includes:
+    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon

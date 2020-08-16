@@ -1,0 +1,22 @@
+# Ignore OS or Ide generated files
+._*
+.buildpath
+.DS_Store
+.DS_Store?
+.idea
+.metrics
+.phptmp
+.project
+.sass-cache
+.settings
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.xdebug
+*.komodoproject
+ehthumbs.db
+[Tt]thumbs.db
+[Dd]esktop.ini
+
+# Docker Compose Environment
+/.env

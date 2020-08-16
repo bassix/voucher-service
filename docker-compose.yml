@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  mariadb:
+    image: mariadb:10.4
+    container_name: mariadb
+    hostname: mariadb
+    restart: on-failure
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci'
+    ]
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_PASSWORD:-nopassword}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE:-voucher}"
+      MYSQL_USER: "${MYSQL_USER:-voucher}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-nopassword}"
+    volumes:
+      - mariadb-data:/var/lib/mysql:rw
+      - ./mariadb/fixtures:/docker-entrypoint-initdb.d:ro,delegated
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: nginx
+    hostname: nginx
+    build:
+      context: ./app
+      target: nginx
+      args:
+        HOST_UID: "${HOST_UID:-33}"
+        HOST_GID: "${HOST_GID:-33}"
+    restart: on-failure
+    volumes:
+      - ./app/docker/nginx/certs:/etc/nginx/certs:ro,delegated
+      - ./app/public:/srv/app/public:ro,delegated
+    depends_on:
+      - app
+    ports:
+      - 80:80
+      - 443:443
+
+  app:
+    image: php:7.4-fpm-alpine
+    container_name: app
+    hostname: app
+    build:
+      context: ./app
+      target: app
+      args:
+        HOST_UID: "${HOST_UID:-33}"
+        HOST_GID: "${HOST_GID:-33}"
+    restart: on-failure
+    environment:
+      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE:-UTC}
+      DATABASE_URL: "mysql://${MYSQL_USER:-voucher}:${MYSQL_PASSWORD:-nopassword}@mariadb:3306/${MYSQL_DATABASE:-voucher}"
+    volumes:
+      - ./app:/srv/app:rw,cached
+      - ./app/var:/srv/app/var:rw,delegated
+      - ./app/public:/srv/app/public:rw,delegated
+    depends_on:
+      - mariadb
+
+volumes:
+  mariadb-data:
