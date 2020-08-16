@@ -57,7 +57,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "phpcs": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --dry-run",
+        "phpstan": "php -d memory_limit=1G vendor/phpstan/phpstan/phpstan analyse ./src ./tests --level 7",
+        "phpunit": "bin/phpunit"
     },
     "conflict": {
         "symfony/symfony": "*"

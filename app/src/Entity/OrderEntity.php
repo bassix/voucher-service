@@ -36,9 +36,23 @@ class OrderEntity
 
     /**
      *
+     * @ORM\Column(name="status", type="string", length=45, nullable=false)
+     */
+    private string $status;
+
+    /**
+     *
      * @ORM\Column(name="amount", type="decimal", precision=20, scale=4, nullable=false)
      */
     private string $amount = '0';
+
+    /**
+     * One order can only have one voucher.
+     *
+     * @ORM\OneToOne(targetEntity="VoucherEntity", inversedBy="order")
+     * @ORM\JoinColumn(name="voucher_id", referencedColumnName="id")
+     */
+    private VoucherEntity $voucher;
 
     public function getId(): int
     {
@@ -69,6 +83,18 @@ class OrderEntity
         return $this->customerId;
     }
 
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public function setAmount(string $amount): self
     {
         $this->amount = $amount;
@@ -79,5 +105,17 @@ class OrderEntity
     public function getAmount(): string
     {
         return $this->amount;
+    }
+
+    public function setVoucher(VoucherEntity $voucher): self
+    {
+        $this->voucher = $voucher;
+
+        return $this;
+    }
+
+    public function getVoucher(): ?VoucherEntity
+    {
+        return $this->voucher;
     }
 }

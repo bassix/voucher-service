@@ -32,10 +32,18 @@ Now generate an environment specific configuration specially for local developme
 ./env.sh
 ```
 
-In the next step we need to install all dependencies:
+Now lets start the Docker Compose environment:
 
 ```bash
-composer install
+docker-compose up
+```
+
+_**Note:** The current configuration is binding the local project as a volume into the container._
+
+Install all relevant dependencies:
+
+```bash
+docker exec --user www-data app composer install --dev
 ```
 
 ## Voucher application
@@ -50,38 +58,46 @@ cd app
 
 By default, the database schema will be created by migration (or database fixtures located at `mariadb/fixtures/voucher.sql`).
 
-Alternative the Doctrine commands can be used to start with a empty database:
+Alternative the Doctrine commands can be used to start with an empty database:
 
 ```bash
-bin/console doctrine:database:create
-bin/console make:migration
-bin/console doctrine:migrations:migrate
+docker exec --user www-data app bin/console doctrine:database:create
+docker exec --user www-data app bin/console make:migration
+docker exec --user www-data app bin/console doctrine:migrations:migrate
 ```
 
 **Note:** if something went horribly wrong, you can start from the ground up by recreating the whole database (all existing migrations should be deleted):
 
 ```bash
-bin/console doctrine:database:drop --force
+docker exec --user www-data app bin/console doctrine:database:drop --force
 ```
 
 ### Code quality tools
 
+_**Note:** Why ever, the SQLite connection isn't working :/ So please use this workaround:_
+
+```bash
+docker exec --user www-data app bin/console doctrine:database:drop --force
+docker exec --user www-data app bin/console doctrine:database:create
+docker exec --user www-data app bin/phpunit
+```
+
 Run [PHPUnit](https://phpunit.de/) tests:
 
 ```bash
-./bin/phpunit
+docker exec --user www-data app bin/phpunit
 ```
 
 Run [phpstan](https://github.com/phpstan/phpstan) to make statical analyse of the code. (Level from 0 to 7, where 0 is the most loose, 7 is the strongest. 0 is default):
 
 ```bash
-vendor/phpstan/phpstan/phpstan analyse ./src --level 7
+docker exec --user www-data app vendor/phpstan/phpstan/phpstan analyse ./src --level 7
 ```
 
 Run [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to fix errors in code (use `--dry-run` option only to see errors):
 
 ```bash
-vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix ./src
+docker exec --user www-data app vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix ./src
 ```
 
 Documentation and constructor with more detailed information could be found at [https://mlocati.github.io/php-cs-fixer-configurator](https://mlocati.github.io/php-cs-fixer-configurator).
