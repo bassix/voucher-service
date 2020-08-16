@@ -30,6 +30,8 @@ RUN set -eux; \
         bcmath \
         pdo_mysql \
     ; \
+    pecl install amqp; \
+    docker-php-ext-enable amqp; \
     docker-php-ext-enable opcache;
 
 # Make Composer available
