@@ -14,8 +14,6 @@ class OrderVoucherController extends AbstractController
 {
     /**
      * @Route(name="order", path="order")
-     * @param MessageBusInterface $bus
-     * @return Response
      * @throws Exception
      */
     public function placeOrder(MessageBusInterface $bus): Response

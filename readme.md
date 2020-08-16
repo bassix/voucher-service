@@ -35,7 +35,7 @@ Now generate an environment specific configuration specially for local developme
 Now lets start the Docker Compose environment:
 
 ```bash
-docker-compose up
+docker-compose up -d --build
 ```
 
 _**Note:** The current configuration is binding the local project as a volume into the container._
@@ -52,6 +52,14 @@ The main part of this service is the Symfony application it self. This is locate
 
 ```bash
 cd app
+```
+
+### Order a voucher
+
+Execute the command to generate a fake order to get a voucher:
+
+```bash
+docker exec --user www-data app bin/console app:order-voucher
 ```
 
 ### Doctrine
