@@ -2,7 +2,7 @@
 # https://docs.docker.com/compose/compose-file/#target
 
 ARG PHP_VERSION=7.4
-ARG NGINX_VERSION=1.17
+ARG NGINX_VERSION=1.19
 
 FROM php:${PHP_VERSION}-fpm-alpine AS app
 
@@ -22,6 +22,8 @@ RUN set -eux; \
         freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev \
+        libtool \
+        libwebp-dev \
         rabbitmq-c \
         rabbitmq-c-dev \
         zlib-dev \
@@ -31,6 +33,7 @@ RUN set -eux; \
         bcmath \
         pdo_mysql \
     ; \
+    pecl install -f amqp; \
     docker-php-ext-enable amqp; \
     docker-php-ext-enable opcache;
 
