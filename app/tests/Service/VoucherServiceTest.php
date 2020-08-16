@@ -33,8 +33,8 @@ class VoucherServiceTest extends KernelTestCase
             $classes[] = $this->entityManager->getClassMetadata($class);
         }
 
-        //$schemaTool = new SchemaTool($this->entityManager);
-        //$schemaTool->createSchema($classes);
+        $schemaTool = new SchemaTool($this->entityManager);
+        $schemaTool->createSchema($classes);
     }
 
     protected function tearDown(): void
