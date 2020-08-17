@@ -48,11 +48,13 @@ docker exec --user www-data app composer install --dev
 
 ## Voucher application
 
-The main part of this service is the Symfony application it self. This is located inside the `app/` directory. To run the following commands, change to this location:
+The main part of this service is the Symfony application it self. Following process is the main part of the implementation:
 
-```bash
-cd app
-```
+![](docs/process/order-voucher-service.png)
+
+[Draw.io](https://draw.io) source: [docs/process/order-voucher-service.drawio](docs/process/order-voucher-service.drawio)
+
+All resources for the service application are located inside the `app/` directory. To run the following commands, change to this location.
 
 ### Order a voucher
 
