@@ -14,7 +14,7 @@ class VoucherService extends AbstractService
 
     public function apply(OrderEntity $order): ?VoucherEntity
     {
-        if (bccomp($order->getAmount(), self::MINIMUM_AMOUNT) <= 0) {
+        if (0 > bccomp($order->getAmount(), self::MINIMUM_AMOUNT)) {
             $this->logger->notice("Voucher code not generated for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with to low total amount of \"{$order->getAmount()}\"!\n");
 
             return null;
