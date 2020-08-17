@@ -16,6 +16,7 @@ class OrderService extends AbstractService
     {
         try {
             $this->entityManager->persist($order);
+            $this->entityManager->flush();
         } catch (\Exception $exception) {
             // Some error handling required!
             return false;

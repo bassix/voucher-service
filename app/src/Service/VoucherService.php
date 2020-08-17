@@ -27,6 +27,7 @@ class VoucherService extends AbstractService
 
         $voucher = (new VoucherEntity())->setOrder($order)->setCode($this->generateCode());
         $this->entityManager->persist($voucher);
+        $this->entityManager->flush();
 
         $this->logger->notice("Voucher code \"{$voucherCode}\" for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with total amount of \"{$order->getAmount()}\" was placed!\n");
 
