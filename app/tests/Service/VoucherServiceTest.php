@@ -8,65 +8,29 @@ use App\Entity\VoucherEntity;
 use App\Repository\OrderRepository;
 use App\Repository\VoucherRepository;
 use App\Service\VoucherService;
-use App\Tests\Traits\EntityManagerAwareTrait;
-use App\Tests\Traits\LoggerAwareTrait;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Error;
 use TypeError;
 
 /**
  * @covers VoucherService
  */
-class VoucherServiceTest extends KernelTestCase
+class VoucherServiceTest extends AbstractKernelTestCase
 {
-    use EntityManagerAwareTrait;
-    use LoggerAwareTrait;
-
-    private const CLASSES = [
-        OrderEntity::class,
-        VoucherEntity::class,
-    ];
-
-    private LoggerInterface $logger;
-
-    private EntityManagerInterface $entityManager;
-
-    protected function setUp(): void
-    {
-        $classes = [];
-        $kernel = self::bootKernel();
-        $this->logger = $this->getLogger($kernel);
-        $this->entityManager = $this->getEntityManager($kernel);
-
-        foreach (self::CLASSES as $class) {
-            $classes[] = $this->entityManager->getClassMetadata($class);
-        }
-
-        $schemaTool = new SchemaTool($this->entityManager);
-        $schemaTool->createSchema($classes);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->entityManager->close();
-    }
-
     public function testApplyVoucherToOrder(): void
     {
         /** @var OrderRepository $orderRepository */
-        $orderRepository = $this->entityManager->getRepository(OrderEntity::class);
+        $orderRepository = $this->orderRepository;
         /** @var VoucherRepository $voucherRepository */
-        $voucherRepository = $this->entityManager->getRepository(VoucherEntity::class);
+        $voucherRepository = $this->voucherRepository;
         $voucherService = new VoucherService($this->logger, $this->entityManager, $orderRepository, $voucherRepository);
 
-        // Create a new and empty order...
-        $order = (new OrderEntity())->setOrderId(0)->setCustomerId(0);
+        // Create a empty order and expect a exception...
+        $order = new OrderEntity();
+        $this->expectException(Error::class);
+        $voucherService->apply($order);
 
         // Test a empty order gets no voucher!
+        $order->setOrderId(0)->setCustomerId(0);
         $voucher = $voucherService->apply($order);
         self::assertNull($voucher);
 
