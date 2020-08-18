@@ -27,7 +27,7 @@ class OrderService extends AbstractService
 
     public function exists(int $orderId, int $customerId): bool
     {
-        return $this->entityManager->getRepository(OrderEntity::class)->count(['order_id' => $orderId, 'customer_id' => $customerId]) >= 1;
+        return $this->orderRepository->count(['order_id' => $orderId, 'customer_id' => $customerId]) >= 1;
     }
 
     public function store(OrderEntity $order): bool
