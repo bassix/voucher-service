@@ -60,9 +60,23 @@ All resources for the service application are located inside the `app/` director
 
 For a better development and testing of the functionality the app provides some helpful console commands:
 
-* Generate a fake order to get a voucher: `docker exec --user www-data app bin/console app:order-voucher:create`
-* Generate an order message to get a voucher: `docker exec --user www-data app bin/console app:order-voucher:message`
-* List all existing orders and vouchers: `docker exec --user www-data app bin/console app:order-voucher:list`
+* Generate a fake order to get a voucher:
+
+    ```bash
+    docker exec --user www-data app bin/console app:order-voucher:create
+    ```
+
+* Generate an order message to get a voucher:
+ 
+    ```bash
+    docker exec --user www-data app bin/console app:order-voucher:message
+    ```
+
+* List all existing orders and vouchers:
+ 
+    ```bash
+    docker exec --user www-data app bin/console app:order-voucher:list
+    ```
 
 ### Doctrine
 
