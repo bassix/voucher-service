@@ -19,16 +19,4 @@ class OrderRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, OrderEntity::class);
     }
-
-    public function findOrderAndCustomer($orderId, $customerId): ?string
-    {
-        return $this->createQueryBuilder('orders')
-            ->select('*')
-            ->andWhere('order_id = :order_id')
-            ->setParameter('order_id', $orderId)
-            ->andWhere('customer_id = :customer_id')
-            ->setParameter('customer_id', $customerId)
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
 }

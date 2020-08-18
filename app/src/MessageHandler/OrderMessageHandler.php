@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
-use App\Entity\OrderEntity;
 use App\Message\OrderMessage;
 use App\Service\OrderService;
 use App\Service\VoucherService;
@@ -31,24 +30,34 @@ class OrderMessageHandler implements MessageHandlerInterface
         $customerId = $orderMessage->getCustomerId();
         $amount = $orderMessage->getAmount();
 
+        $this->logger->notice("Message for order id \"{$orderId}\", customer id \"{$customerId}\" and total amount of \"{$amount}\" received!\n");
+
         if ($this->orderService->exists($orderId, $customerId)) {
-            $this->logger->notice("Order with id \"{$orderId}\" for customer id \"{$customerId}\" already processed!\n");
+            $this->logger->notice("Order exists and already processed!\n");
         }
 
-        $order = (new OrderEntity())
-            ->setOrderId($orderId)
-            ->setCustomerId($customerId)
-            ->setAmount($amount);
+        // Create a new order...
+        $order = $this->orderService->createNew($orderId, $customerId, $amount);
+
+        if (null === $order) {
+            $this->logger->error("Unexpected situation! Unable to persist and store the order!\n");
+
+            return;
+        }
+
+        // Apply a voucher to the order...
         $voucher = $this->voucherService->apply($order);
 
         if ($this->orderService->store($order)) {
-            // @todo Send email to customer with voucher code!
+            $this->logger->error("Unexpected situation! Unable to persist and store the order with a voucher!\n");
+
+            return;
         }
 
-        $this->logger->notice("Order with id \"{$orderId}\" for customer id \"{$customerId}\" and total amount of \"{$amount}\" was placed!\n");
-
         if (null !== $voucher) {
-            $this->logger->notice("New voucher code \"{$voucher->getCode()}\" generated!\n");
+            $this->logger->notice("Voucher to order added, new voucher code \"{$voucher->getCode()}\" generated!\n");
+        } else {
+            $this->logger->notice("Voucher to order added but no voucher code generated!\n");
         }
     }
 }
