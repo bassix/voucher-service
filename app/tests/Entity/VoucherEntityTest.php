@@ -20,12 +20,10 @@ class VoucherEntityTest extends KernelTestCase
             self::assertInstanceOf(VoucherEntity::class, $voucher);
             $voucher->setStatus($actual['status']);
             $voucher->setCode($actual['code']);
-            $voucher->setOrder($actual['order']);
 
             $expected = $testCase['expected'];
             self::assertEquals($expected['status'], $voucher->getStatus(), sprintf('Test case "%s" failed asserting the correct state!', $row));
             self::assertEquals($expected['code'], $voucher->getCode(), sprintf('Test case "%s" failed asserting the correct state!', $row));
-            self::assertInstanceOf($expected['order'], $voucher->getOrder(), sprintf('Test case "%s" failed asserting instance of "%s"!', $row, $expected['order']));
         }
     }
 
@@ -35,15 +33,13 @@ class VoucherEntityTest extends KernelTestCase
             'actual' => [
                 'id' => 1,
                 'status' => 'new',
-                'code' => 'some-code',
-                'order' => new OrderEntity(),
+                'code' => 'some-code'
             ],
             'expected' => [
                 'exception' => false,
                 'id' => 1,
                 'status' => 'new',
-                'code' => 'some-code',
-                'order' => OrderEntity::class,
+                'code' => 'some-code'
             ],
         ];
 

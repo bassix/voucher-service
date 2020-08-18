@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Entity\OrderEntity;
+use App\Entity\VoucherEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -20,11 +21,13 @@ class OrderEntityTest extends KernelTestCase
             $order->setOrderId($actual['order_id']);
             $order->setCustomerId($actual['customer_id']);
             $order->setStatus($actual['status']);
+            $order->setVoucher($actual['voucher']);
 
             $expected = $testCase['expected'];
             self::assertEquals($expected['order_id'], $order->getOrderId(), sprintf('Test case "%s" failed asserting the correct order id!', $row));
             self::assertEquals($expected['customer_id'], $order->getCustomerId(), sprintf('Test case "%s" failed asserting the correct customer id!', $row));
             self::assertEquals($expected['status'], $order->getStatus(), sprintf('Test case "%s" failed asserting the correct state!', $row));
+            self::assertInstanceOf($expected['voucher'], $order->getVoucher(), sprintf('Test case "%s" failed asserting the correct instance of voucher entity!', $row));
         }
     }
 
@@ -36,6 +39,7 @@ class OrderEntityTest extends KernelTestCase
                 'order_id' => 1,
                 'customer_id' => 1,
                 'status' => 'new',
+                'voucher' => new VoucherEntity()
             ],
             'expected' => [
                 'exception' => false,
@@ -43,6 +47,7 @@ class OrderEntityTest extends KernelTestCase
                 'order_id' => 1,
                 'customer_id' => 1,
                 'status' => 'new',
+                'voucher' => VoucherEntity::class
             ],
         ];
 
