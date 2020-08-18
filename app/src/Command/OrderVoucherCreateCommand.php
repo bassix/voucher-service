@@ -8,9 +8,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OrderVoucherCommand extends Command
+class OrderVoucherCreateCommand extends Command
 {
-    protected static $defaultName = 'app:order-voucher';
+    protected static $defaultName = 'app:order-voucher:create';
 
     private OrderVoucherService $orderVoucherService;
 
@@ -20,7 +20,7 @@ class OrderVoucherCommand extends Command
         $this->orderVoucherService = $orderVoucherService;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $orderId = time();
         $customerId = random_int(100, 999);

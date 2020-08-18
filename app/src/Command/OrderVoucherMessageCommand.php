@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class OrderVoucherMessageCommand extends Command
 {
-    protected static $defaultName = 'app:order-voucher-message';
+    protected static $defaultName = 'app:order-voucher:message';
 
     private MessageBusInterface $bus;
 
@@ -21,7 +21,7 @@ class OrderVoucherMessageCommand extends Command
         $this->bus = $bus;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Note: This is only a helper command to place a fake order and generate a message into the message bus!');
 
