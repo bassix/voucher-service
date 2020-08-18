@@ -7,7 +7,7 @@ use App\Entity\OrderEntity;
 
 class OrderService extends AbstractService
 {
-    public function createNew(int $orderId, int $customerId, string $amount): ?OrderEntity
+    public function create(int $orderId, int $customerId, string $amount): ?OrderEntity
     {
         try {
             $order = (new OrderEntity())
@@ -16,9 +16,8 @@ class OrderService extends AbstractService
                 ->setAmount($amount)
                 ->setStatus('new');
             $this->entityManager->persist($order);
-            $this->entityManager->flush();
         } catch (\Exception $exception) {
-            // Some error handling required!
+            // @todo Some error handling required!
             return null;
         }
 
@@ -27,7 +26,7 @@ class OrderService extends AbstractService
 
     public function exists(int $orderId, int $customerId): bool
     {
-        return $this->orderRepository->count(['order_id' => $orderId, 'customer_id' => $customerId]) >= 1;
+        return $this->orderRepository->count(['orderId' => $orderId, 'customerId' => $customerId]) >= 1;
     }
 
     public function store(OrderEntity $order): bool
@@ -36,7 +35,7 @@ class OrderService extends AbstractService
             $this->entityManager->persist($order);
             $this->entityManager->flush();
         } catch (\Exception $exception) {
-            // Some error handling required!
+            // @todo Some error handling required!
             return false;
         }
 

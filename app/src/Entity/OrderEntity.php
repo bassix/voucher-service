@@ -38,7 +38,7 @@ class OrderEntity
      *
      * @ORM\Column(name="status", type="string", length=45, nullable=false)
      */
-    private string $status;
+    private string $status = 'new';
 
     /**
      *
@@ -49,10 +49,10 @@ class OrderEntity
     /**
      * One order can only have one voucher.
      *
-     * @ORM\OneToOne(targetEntity="VoucherEntity", inversedBy="order", cascade={"persist", "remove" })
+     * @ORM\OneToOne(targetEntity="VoucherEntity", inversedBy="order", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="voucher_id", referencedColumnName="id", nullable=true)
      */
-    private VoucherEntity $voucher;
+    private ?VoucherEntity $voucher;
 
     public function getId(): int
     {

@@ -15,7 +15,7 @@ class VoucherService extends AbstractService
     public function apply(OrderEntity $order): ?VoucherEntity
     {
         if (0 > bccomp($order->getAmount(), self::MINIMUM_AMOUNT)) {
-            $this->logger->notice("Voucher code not generated for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with to low total amount of \"{$order->getAmount()}\"!\n");
+            $this->logger->info("Voucher code not generated for order id \"{$order->getOrderId()}\", customer id \"{$order->getCustomerId()}\" because the total amount of \"{$order->getAmount()}\" is to low!\n");
 
             return null;
         }
@@ -25,12 +25,10 @@ class VoucherService extends AbstractService
             $voucherCount = $this->voucherRepository->count(['code' => $voucherCode]);
         } while (1 <= $voucherCount);
 
-        $voucher = (new VoucherEntity())->setCode($this->generateCode());
+        $voucher = (new VoucherEntity())->setCode($voucherCode);
         $this->entityManager->persist($voucher);
         $order->setVoucher($voucher)->setStatus('generated');
-        $this->entityManager->flush();
-
-        $this->logger->notice("Voucher code \"{$voucherCode}\" for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with total amount of \"{$order->getAmount()}\" was placed!\n");
+        $this->logger->info("Voucher code \"{$voucherCode}\" for order id \"{$order->getOrderId()}\" and customer id \"{$order->getCustomerId()}\" with total amount of \"{$order->getAmount()}\" was placed!\n");
 
         return $voucher;
     }

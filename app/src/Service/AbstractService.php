@@ -32,6 +32,7 @@ abstract class AbstractService
         }
 
         $this->entityManager = $entityManager;
+        $this->orderRepository = $orderRepository;
         $this->voucherRepository = $voucherRepository;
     }
 }
