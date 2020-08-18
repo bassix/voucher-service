@@ -39,7 +39,7 @@ class OrderEntityTest extends KernelTestCase
                 'order_id' => 1,
                 'customer_id' => 1,
                 'status' => 'new',
-                'voucher' => new VoucherEntity()
+                'voucher' => new VoucherEntity(),
             ],
             'expected' => [
                 'exception' => false,
@@ -47,7 +47,7 @@ class OrderEntityTest extends KernelTestCase
                 'order_id' => 1,
                 'customer_id' => 1,
                 'status' => 'new',
-                'voucher' => VoucherEntity::class
+                'voucher' => VoucherEntity::class,
             ],
         ];
 

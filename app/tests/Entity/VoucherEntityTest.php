@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Entity\OrderEntity;
 use App\Entity\VoucherEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -33,13 +32,13 @@ class VoucherEntityTest extends KernelTestCase
             'actual' => [
                 'id' => 1,
                 'status' => 'new',
-                'code' => 'some-code'
+                'code' => 'some-code',
             ],
             'expected' => [
                 'exception' => false,
                 'id' => 1,
                 'status' => 'new',
-                'code' => 'some-code'
+                'code' => 'some-code',
             ],
         ];
 

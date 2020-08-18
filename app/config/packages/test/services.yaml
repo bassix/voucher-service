@@ -1,0 +1,6 @@
+services:
+  # By default, the logger is private and can't be accessed.
+  # We need the logger for testing of our services because of injection
+  logger:
+    alias: 'monolog.logger'
+    public: true

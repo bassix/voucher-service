@@ -5,11 +5,14 @@ namespace App\Tests\Service;
 
 use App\Entity\OrderEntity;
 use App\Entity\VoucherEntity;
+use App\Repository\OrderRepository;
 use App\Repository\VoucherRepository;
 use App\Service\VoucherService;
 use App\Tests\Traits\EntityManagerAwareTrait;
+use App\Tests\Traits\LoggerAwareTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use TypeError;
 
@@ -19,11 +22,14 @@ use TypeError;
 class VoucherServiceTest extends KernelTestCase
 {
     use EntityManagerAwareTrait;
+    use LoggerAwareTrait;
 
     private const CLASSES = [
         OrderEntity::class,
         VoucherEntity::class,
     ];
+
+    private LoggerInterface $logger;
 
     private EntityManagerInterface $entityManager;
 
@@ -31,6 +37,7 @@ class VoucherServiceTest extends KernelTestCase
     {
         $classes = [];
         $kernel = self::bootKernel();
+        $this->logger = $this->getLogger($kernel);
         $this->entityManager = $this->getEntityManager($kernel);
 
         foreach (self::CLASSES as $class) {
@@ -48,14 +55,18 @@ class VoucherServiceTest extends KernelTestCase
         $this->entityManager->close();
     }
 
-    public function testApplyToOrder(): void
+    public function testApplyVoucherToOrder(): void
     {
+        /** @var OrderRepository $orderRepository */
+        $orderRepository = $this->entityManager->getRepository(OrderEntity::class);
         /** @var VoucherRepository $voucherRepository */
         $voucherRepository = $this->entityManager->getRepository(VoucherEntity::class);
-        $voucherService = new VoucherService($this->entityManager, $voucherRepository);
-        $order = new OrderEntity();
+        $voucherService = new VoucherService($this->logger, $this->entityManager, $orderRepository, $voucherRepository);
 
-        // Test a empty order gets now voucher!
+        // Create a new and empty order...
+        $order = (new OrderEntity())->setOrderId(0)->setCustomerId(0);
+
+        // Test a empty order gets no voucher!
         $voucher = $voucherService->apply($order);
         self::assertNull($voucher);
 
@@ -68,7 +79,6 @@ class VoucherServiceTest extends KernelTestCase
         $order->setAmount('100');
         $voucher = $voucherService->apply($order);
         self::assertInstanceOf(VoucherEntity::class, $voucher);
-        self::assertInstanceOf(OrderEntity::class, $voucher->getOrder());
         self::assertNotEmpty($voucher->getCode());
         self::assertEquals(VoucherService::CODE_LENGTH, strlen($voucher->getCode()));
 
