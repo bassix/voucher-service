@@ -2,7 +2,7 @@
 # https://docs.docker.com/compose/compose-file/#target
 
 ARG PHP_VERSION=7.4
-ARG NGINX_VERSION=1.17
+ARG NGINX_VERSION=1.19
 
 FROM php:${PHP_VERSION}-fpm-alpine AS app
 
@@ -22,7 +22,10 @@ RUN set -eux; \
         freetype-dev \
         libjpeg-turbo-dev \
         libpng-dev \
+        libtool \
         libwebp-dev \
+        rabbitmq-c \
+        rabbitmq-c-dev \
         zlib-dev \
     ; \
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
@@ -30,6 +33,8 @@ RUN set -eux; \
         bcmath \
         pdo_mysql \
     ; \
+    pecl install -f amqp; \
+    docker-php-ext-enable amqp; \
     docker-php-ext-enable opcache;
 
 # Make Composer available
@@ -81,6 +86,10 @@ RUN set -eux; \
 
 # Create volumes
 VOLUME ["/srv/app", "/srv/app/public", "/srv/app/var"]
+
+# Add and activate message consumer
+COPY public public/
+ENTRYPOINT ["bash", "/srv/app/message.sh"]
 
 FROM nginx:${NGINX_VERSION}-alpine AS nginx
 

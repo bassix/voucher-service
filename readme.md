@@ -35,7 +35,7 @@ Now generate an environment specific configuration specially for local developme
 Now lets start the Docker Compose environment:
 
 ```bash
-docker-compose up
+docker-compose up -d --build
 ```
 
 _**Note:** The current configuration is binding the local project as a volume into the container._
@@ -48,10 +48,20 @@ docker exec --user www-data app composer install --dev
 
 ## Voucher application
 
-The main part of this service is the Symfony application it self. This is located inside the `app/` directory. To run the following commands, change to this location:
+The main part of this service is the Symfony application it self. Following process is the main part of the implementation:
+
+![](docs/process/order-voucher-service.png)
+
+[Draw.io](https://draw.io) source: [docs/process/order-voucher-service.drawio](docs/process/order-voucher-service.drawio)
+
+All resources for the service application are located inside the `app/` directory. To run the following commands, change to this location.
+
+### Order a voucher
+
+Execute the command to generate a fake order to get a voucher:
 
 ```bash
-cd app
+docker exec --user www-data app bin/console app:order-voucher
 ```
 
 ### Doctrine

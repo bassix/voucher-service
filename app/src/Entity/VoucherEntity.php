@@ -32,13 +32,6 @@ class VoucherEntity
      */
     private string $code;
 
-    /**
-     * One voucher can relate only to one order.
-     *
-     * @ORM\OneToOne(targetEntity="OrderEntity", mappedBy="voucher")
-     */
-    private OrderEntity $order;
-
     public function getId(): int
     {
         return $this->id;
@@ -66,17 +59,5 @@ class VoucherEntity
     public function getCode(): string
     {
         return $this->code;
-    }
-
-    public function setOrder(OrderEntity $order): self
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    public function getOrder(): OrderEntity
-    {
-        return $this->order;
     }
 }

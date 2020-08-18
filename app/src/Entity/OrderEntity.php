@@ -49,8 +49,8 @@ class OrderEntity
     /**
      * One order can only have one voucher.
      *
-     * @ORM\OneToOne(targetEntity="VoucherEntity", inversedBy="order")
-     * @ORM\JoinColumn(name="voucher_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="VoucherEntity", inversedBy="order", cascade={"persist", "remove" })
+     * @ORM\JoinColumn(name="voucher_id", referencedColumnName="id", nullable=true)
      */
     private VoucherEntity $voucher;
 
