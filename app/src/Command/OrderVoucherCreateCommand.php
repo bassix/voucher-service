@@ -32,7 +32,7 @@ class OrderVoucherCreateCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($order->getVoucher() === null) {
+        if (null === $order->getVoucher()) {
             $output->writeln('Order processed but no voucher generated!');
 
             return Command::SUCCESS;

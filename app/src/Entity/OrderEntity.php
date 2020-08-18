@@ -38,13 +38,13 @@ class OrderEntity
      *
      * @ORM\Column(name="status", type="string", length=45, nullable=false)
      */
-    private string $status = 'new';
+    private string $status;
 
     /**
      *
      * @ORM\Column(name="amount", type="decimal", precision=20, scale=4, nullable=false)
      */
-    private string $amount = '0';
+    private string $amount;
 
     /**
      * One order can only have one voucher.
@@ -53,6 +53,13 @@ class OrderEntity
      * @ORM\JoinColumn(name="voucher_id", referencedColumnName="id", nullable=true)
      */
     private ?VoucherEntity $voucher;
+
+    public function __construct()
+    {
+        $this->status = 'new';
+        $this->amount = '0.0';
+        $this->voucher = null;
+    }
 
     public function getId(): int
     {
