@@ -1,12 +1,13 @@
 {
     "name": "bassix/voucher-service",
-    "description": "This is a small demo of a service application written in PHP and Symfony 5 to generate vouchers for orders.",
+    "description": "This is a small demo of a service application written in PHP 7.4 and Symfony 5 using Doctrine and Messenger Component to generate vouchers for orders.",
     "type": "project",
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-bcmath": "*",
         "composer/package-versions-deprecated": "1.10.99.1",
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^3.0",
