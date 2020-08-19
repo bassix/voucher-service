@@ -16,19 +16,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build site assets
+    - name: Check app sources
+      working-directory: ./app
       run: ls -la
 
     - name: Validate composer.json and composer.lock
-      working-directory: app
+      working-directory: ./app
       run: composer validate
 
     - name: Cache Composer packages
-      working-directory: app
       id: composer-cache
       uses: actions/cache@v2
       with:
-        path: vendor
+        path: ./app/vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
