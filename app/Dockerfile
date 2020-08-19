@@ -40,9 +40,13 @@ RUN set -eux; \
 # Make Composer available
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set PHP specific settings by our own configuration
-COPY docker/php/php.ini /usr/local/etc/php/php.ini
-COPY docker/php/php-cli.ini /usr/local/etc/php/php-cli.ini
+# Use the default development configuration
+# @todo we need a solution to set production or development!
+#RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+# Configure the PHP and the OPcache
+COPY ./docker/php/php.ini $PHP_INI_DIR/conf.d/php.ini
+COPY ./docker/php/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
 
 WORKDIR /srv/app
 
@@ -89,7 +93,7 @@ VOLUME ["/srv/app", "/srv/app/public", "/srv/app/var"]
 
 # Add and activate message consumer
 COPY public public/
-ENTRYPOINT ["bash", "/srv/app/message.sh"]
+ENTRYPOINT ["bash", "/srv/app/messenger-consume.sh"]
 
 FROM nginx:${NGINX_VERSION}-alpine AS nginx
 

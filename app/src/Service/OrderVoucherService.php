@@ -31,7 +31,7 @@ class OrderVoucherService extends AbstractService
     public function appoint($orderId, $customerId, $amount): ?OrderEntity
     {
         if ($this->orderService->exists($orderId, $customerId)) {
-            $this->logger->info("Order exists and already processed!\n");
+            $this->logger->info("Order with order id \"{$orderId}\" and customer id \"{$customerId}\" exists and already processed!");
 
             return null;
         }
@@ -39,8 +39,10 @@ class OrderVoucherService extends AbstractService
         // Create a new order...
         $order = $this->orderService->create($orderId, $customerId, $amount);
 
-        if (null === $order) {
-            $this->logger->error("Unexpected situation! Unable to persist and store the order!\n");
+        if (null !== $order) {
+            $this->logger->info("Order with order id \"{$orderId}\" and customer id \"{$customerId}\" successful created!");
+        } else {
+            $this->logger->error("Unable to create order with order id \"{$orderId}\" and customer id \"{$customerId}\"!");
 
             return null;
         }
@@ -48,16 +50,18 @@ class OrderVoucherService extends AbstractService
         // Apply a voucher to the order...
         $voucher = $this->voucherService->apply($order);
 
-        if (null === $voucher) {
-            $this->logger->info("Voucher to order added but no voucher code generated!\n");
-
-            return $order;
+        if (null !== $voucher) {
+            $order->setVoucher($voucher)->setStatus('processed');
+            $this->logger->info('Voucher added to order!');
+        } else {
+            $this->logger->info('No voucher generated!');
         }
 
-        $this->logger->info("Voucher to order added, new voucher code \"{$voucher->getCode()}\" generated!\n");
-
+        // Store all persisted entities into the database...
         if ($this->orderService->store($order)) {
-            $this->logger->error("Unexpected situation! Unable to persist and store the order with a voucher!\n");
+            $this->logger->info('The order stored successful!');
+        } else {
+            $this->logger->error('Storage error, unable to store the persisted order and voucher!');
 
             return null;
         }

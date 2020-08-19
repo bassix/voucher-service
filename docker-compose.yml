@@ -1,6 +1,14 @@
 version: '3.4'
 
 services:
+  adminer:
+    image: adminer
+    container_name: adminer
+    hostname: adminer
+    ports:
+      - 9080:8080
+    restart: always
+
   mariadb:
     image: mariadb:10.5
     container_name: mariadb
@@ -61,10 +69,11 @@ services:
         HOST_UID: "${HOST_UID:-33}"
         HOST_GID: "${HOST_GID:-33}"
     environment:
-      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE:-UTC}
+      PHP_DATE_TIMEZONE: "${PHP_DATE_TIMEZONE:-UTC}"
+      OPCACHE_VALIDATE_TIMESTAMPS: "${OPCACHE_VALIDATE_TIMESTAMPS:-0}"
       DATABASE_URL: "mysql://${MYSQL_USER:-voucher}:${MYSQL_PASSWORD:-nopassword}@mariadb:3306/${MYSQL_DATABASE:-voucher}"
       MESSENGER_TRANSPORT_DSN: "amqp://${RABBITMQ_USER:-voucher}:${RABBITMQ_PASS:-voucher}@rabbitmq:5672/%2f/messages"
-    restart: on-failure
+    restart: always
     depends_on:
       - rabbitmq
       - mariadb

@@ -8,25 +8,33 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    env:
+      working-directory: ./app
 
     steps:
     - uses: actions/checkout@v2
 
+    - name: Check app sources
+      working-directory: ./app
+      run: ls -la
+
     - name: Validate composer.json and composer.lock
+      working-directory: ./app
       run: composer validate
 
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v2
       with:
-        path: vendor
+        path: ./app/vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
 
     - name: Install dependencies
+      working-directory: app
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest
 
