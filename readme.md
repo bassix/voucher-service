@@ -32,6 +32,12 @@ Now generate an environment specific configuration specially for local developme
 ./env.sh
 ```
 
+**Note:** the `.env` file holds the following main environment variables:
+
+* The `HOST_UID` and `HOST_GID` of your local user and this ID's are used inside the container to get access to the volumes with right permissions.
+* The `PHP_DATE_TIMEZONE` to configure the time zone the application is running. The most common is `Europe/Berlin`. The default value is set to `UTC`.
+* The `OPCACHE_VALIDATE_TIMESTAMPS` to activate `1` or deactivate `0` the opcache rebuild by each request. Set this to `0` in development mode.
+
 Now lets start the Docker Compose environment:
 
 ```bash
