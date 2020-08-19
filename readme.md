@@ -1,21 +1,32 @@
 # Voucher service
 
-This repository holds the source of a **voucher service**.
+This repository holds the source of a **voucher service**. A small demo for a service application written in PHP 7.4 and Symfony 5 using Doctrine and Messenger Component to generate vouchers for orders.
 
-For correct working inside the project note following dependencies:
+For correct working inside the project, please note following dependencies:
 
-- Docker
-- Docker Compose
-- PHP 7.4
-- Symfony 5 Flex
-- Doctrine
-- PHPUnit
+- Infrastructure:
+    - [Docker](https://www.docker.com/)
+    - [Docker Compose](https://docs.docker.com/compose/)
+- Dependent Services:
+    - [MariaDB](https://mariadb.org/)
+    - [RabbitMQ](https://www.rabbitmq.com/)
+    - [SQLite](https://www.sqlite.org/index.html)
+- Coding language:
+    - [PHP 7.4](https://www.php.net/releases/7_4_0.php)
+- Framework and components:
+    - [Symfony 5](https://symfony.com/5) with [Symfony Flex](https://symfony.com/doc/current/setup/flex.html)
+    - [Doctrine](https://www.doctrine-project.org/) and [Doctrine ORM](https://symfony.com/doc/current/doctrine.html)
+    - [Symfony Messenger Component](https://symfony.com/doc/current/components/messenger.html)
+- Code quality and test development:
+    - [PHPUnit](https://phpunit.de/)
+    - [PHPStan](https://phpstan.org/)
+    - [PHP Coding Standards Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)
 
 **Note:** For more detailed dependencies take a look into the configurations:
 
-* Docker Compose config: `docker-compose.yml`
-* Application Docker config: `app/Dockerfile`
-* Symfony application config: `app/composer.json`
+* Docker Compose config: [`docker-compose.yml`](docker-compose.yml)
+* Application Docker config: [`app/Dockerfile`](app/Dockerfile)
+* Symfony application config: [`app/composer.json`](app/composer.json)
 
 To get involved into the development of this project you need to get a local copy of this repository:
 
@@ -26,7 +37,7 @@ cd voucher-service
 
 _**Note:** This project is based on the [GitFlow](http://nvie.com/posts/a-successful-git-branching-model/) branching model and workflow._
 
-Now generate an environment specific configuration specially for local development:
+Before the application environment can be started we need to generate an environment specific configuration specially for local development:
 
 ```bash
 ./env.sh
@@ -170,7 +181,7 @@ PHPStan Symfony Framework extensions and rules:
 composer require --dev phpstan/phpstan-symfony
 ```
 
-PHPStan Symfony Framework extensions and rules:
+PHP Coding Standards Fixer Symfony Framework extensions and rules:
 
 ```bash
 composer require --dev friendsofphp/php-cs-fixer
