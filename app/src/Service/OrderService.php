@@ -9,17 +9,21 @@ class OrderService extends AbstractService
 {
     public function create(int $orderId, int $customerId, string $amount): ?OrderEntity
     {
+        $order = (new OrderEntity())
+            ->setOrderId($orderId)
+            ->setCustomerId($customerId)
+            ->setAmount($amount)
+            ->setStatus('new');
+        $this->entityManager->persist($order);
+
+        /*
         try {
-            $order = (new OrderEntity())
-                ->setOrderId($orderId)
-                ->setCustomerId($customerId)
-                ->setAmount($amount)
-                ->setStatus('new');
             $this->entityManager->persist($order);
         } catch (\Exception $exception) {
             // @todo Some error handling required!
             return null;
         }
+        */
 
         return $order;
     }
@@ -31,13 +35,16 @@ class OrderService extends AbstractService
 
     public function store(OrderEntity $order): bool
     {
+        $this->entityManager->flush();
+
+        /*
         try {
-            $this->entityManager->persist($order);
             $this->entityManager->flush();
         } catch (\Exception $exception) {
             // @todo Some error handling required!
             return false;
         }
+        */
 
         return true;
     }
