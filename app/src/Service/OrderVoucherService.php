@@ -54,6 +54,7 @@ class OrderVoucherService extends AbstractService
             $order->setVoucher($voucher)->setStatus('processed');
             $this->logger->info('Voucher added to order!');
         } else {
+            $order->setStatus('discarded');
             $this->logger->info('No voucher generated!');
         }
 
