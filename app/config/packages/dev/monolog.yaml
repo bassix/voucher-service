@@ -9,10 +9,10 @@ monolog:
       path: "%kernel.logs_dir%/%kernel.environment%.log"
       channels: ['!event']
       #channels: ['!event', '!doctrine']
-    #stdout:
-    #  type: stream
-    #  level: info
-    #  path: 'php://stdout'
+    stdout:
+      type: stream
+      level: info
+      path: 'php://stdout'
     console:
       type: console
       process_psr_3_messages: false
